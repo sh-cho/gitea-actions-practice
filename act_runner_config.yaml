@@ -1,0 +1,5 @@
+# https://gitea.com/gitea/act_runner/src/branch/main/internal/pkg/config/config.example.yaml
+
+runner:
+  # Ignore TLS certificate of the Gitea instance
+  insecure: true

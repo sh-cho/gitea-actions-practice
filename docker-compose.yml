@@ -8,8 +8,6 @@ services:
       # app.ini override (https://docs.gitea.com/next/installation/install-with-docker#managing-deployments-with-environment-variables)
       - GITEA__actions__ENABLED=true
     restart: always
-    networks:
-      - gitea
     volumes:
       - ./gitea:/data
       # - ./app.ini:/data/gitea/conf/app.ini
@@ -27,7 +25,3 @@ services:
   #     - GITEA_RUNNER_REGISTRATION_TOKEN=...
   #   volumes:
   #     - /var/run/docker.sock:/var/run/docker.sock
-
-networks:
-  gitea:
-    external: false
