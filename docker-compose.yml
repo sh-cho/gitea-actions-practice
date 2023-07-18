@@ -1,27 +1,42 @@
 services:
-  server:
+  gitea:
     image: gitea/gitea:latest
     container_name: gitea
     environment:
       - USER_UID=1000
       - USER_GID=1000
       # app.ini override (https://docs.gitea.com/next/installation/install-with-docker#managing-deployments-with-environment-variables)
+      - GITEA__server__START_SSH_SERVER=true
+      - GITEA__server__SSH_PORT=222
+      - GITEA__server__SSH_LISTEN_PORT=222
       - GITEA__actions__ENABLED=true
-    restart: always
     volumes:
       - ./gitea:/data
-      # - ./app.ini:/data/gitea/conf/app.ini
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - gitea
+    restart: always
     ports:
       - "3000:3000"
       - "222:22"
 
-  # XXX: How can I set the registration token before gitea is up?
-  # runner1:
-  #   image: gitea/act_runner:nightly
-  #   container_name: runner1
-  #   environment:
-  #     - GITEA_RUNNER_REGISTRATION_TOKEN=...
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
+  gitea_act_runner:
+    image: gitea/act_runner:nightly
+    container_name: gitea_act_runner
+    environment:
+      - CONFIG_FILE=/config.yaml
+      - GITEA_INSTANCE_URL=http://gitea:3000
+      - GITEA_RUNNER_REGISTRATION_TOKEN=${RUNNER_TOKEN}
+      - GITEA_RUNNER_NAME=runner
+    volumes:
+      - ./act_runner_config.yaml:/config.yaml
+      - ./runner_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - gitea
+    ports:
+      - "8088:8088"
+
+networks:
+  gitea:
