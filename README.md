@@ -21,6 +21,11 @@ Use ngrok to expose gitea runner
 ///
 (?) Configure GitHub repo webhook URL to ngrok URL
 
+
+<img width="903" alt="image" src="https://github.com/sh-cho/gitea-actions-practice/assets/11611397/90daca1c-dcc8-4009-9ee2-32bb4a793e2e">
+
+...and runner's ready to work!
+
 ### Troubleshooting
 
 #### Cannot ping the Gitea instance server
